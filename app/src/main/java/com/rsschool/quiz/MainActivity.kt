@@ -2,6 +2,7 @@ package com.rsschool.quiz
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.rsschool.quiz.questions.QuizFragment
 
 class MainActivity : AppCompatActivity() {
 
