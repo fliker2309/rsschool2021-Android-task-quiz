@@ -1,4 +1,4 @@
-package com.rsschool.quiz.questions
+package com.rsschool.quiz
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,11 +7,13 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.rsschool.quiz.ActionFragment
+import com.rsschool.quiz.data.Constants
 import com.rsschool.quiz.databinding.FragmentQuizBinding
 
 
-class QuizFragment : Fragment() {
+class QuizQuestionsFragment : Fragment() {
 
+    private val questionList = Constants.getQuestions()
     private var _binding: FragmentQuizBinding? = null
     private val binding: FragmentQuizBinding
         get() = _binding!!
@@ -42,8 +44,8 @@ class QuizFragment : Fragment() {
     }
 
 
-   /* companion object {
-        fun newInstance(*//*result: Int, theme: Int*//*): QuizFragment {
+    /* companion object {
+         fun newInstance(*//*result: Int, theme: Int*//*): QuizFragment {
             val args = Bundle()
             *//*    args.putInt(THEME, theme)
                 args.putInt(QUIZ_RESULT, result)*//*
