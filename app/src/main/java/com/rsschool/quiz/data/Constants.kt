@@ -5,8 +5,8 @@ import com.rsschool.quiz.data.model.Question
 object Constants {
 
     fun getQuestions(): ArrayList<Question> {
-        val questionList = ArrayList<Question>()
 
+        val questionList = ArrayList<Question>()
         val question1 = Question(
             1,
             "What is the capital of Great Britain?",
@@ -15,7 +15,9 @@ object Constants {
             "Paris",
             "Istanbul",
             "Manchester",
-            2
+            2,
+            0,
+
         )
         questionList.add(question1)
 
@@ -27,7 +29,9 @@ object Constants {
             "Russia",
             "Belgium",
             "England",
-            1
+            1,
+            0,
+
         )
         questionList.add(question2)
 
@@ -39,7 +43,9 @@ object Constants {
             "1959",
             "1961",
             "1969",
-            4
+            4,
+            0,
+
         )
         questionList.add(question3)
 
@@ -51,19 +57,23 @@ object Constants {
             "JetBrains",
             "Eclipse",
             "Oracle",
-            3
+            3,
+            0,
+
         )
         questionList.add(question4)
 
         val question5 = Question(
             5,
-            "who wrote the book The Little Prince?",
+            "Who wrote the book The Little Prince?",
             "Daniel Defoe",
             "Oscar Wilde ",
             "Lewis Carroll",
             "William Shakespeare",
             "Antoine de Saint-Exupéry",
-            5
+            5,
+            0,
+
         )
         questionList.add(question5)
 

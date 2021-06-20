@@ -2,7 +2,14 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="cyan_100_dark">#81b9bf</color>
+    <color name="deep_purple_100">#d1c4e9</color>
+    <color name="deep_purple_100_light">#fff7ff</color>
+    <color name="deep_purple_100_dark">#a094b7</color>
+    <color name="pink_100">#F8BBD0</color>
+    <color name="pink_100_light">#FCE4EC</color>
     <color name="deep_orange_100">#ffccbc</color>
+    <color name="pink_100_dark">#F48FB1</color>
     <color name="deep_orange_100_light">#ffffee</color>
     <color name="deep_orange_100_dark">#cb9b8c</color>
     <color name="yellow_100">#fff9c4</color>
@@ -13,8 +20,4 @@
     <color name="light_green_100_dark">#aabb97</color>
     <color name="cyan_100">#b2ebf2</color>
     <color name="cyan_100_light">#e5ffff</color>
-    <color name="cyan_100_dark">#81b9bf</color>
-    <color name="deep_purple_100">#d1c4e9</color>
-    <color name="deep_purple_100_light">#fff7ff</color>
-    <color name="deep_purple_100_dark">#a094b7</color>
 </resources>

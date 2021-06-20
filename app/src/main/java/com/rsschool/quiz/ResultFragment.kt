@@ -1,27 +1,39 @@
 package com.rsschool.quiz
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import com.rsschool.quiz.data.model.Question
 import com.rsschool.quiz.databinding.FragmentResultBinding
 
+class ResultFragment : Fragment() {
 
-class ResultFragment : Fragment(), ResultFragmentAction {
+    private var result: String? = null
+    private var numberOfQuestions: String? = null
 
     private var _binding: FragmentResultBinding? = null
     private val binding: FragmentResultBinding
         get() = _binding!!
-
-    private var resultAction: ResultFragmentAction? = null
-
+    private var resultAction: ClickListener? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is ResultFragmentAction)
+        if (context is ClickListener)
             resultAction = context
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            result = it.getString(RESULT)
+            numberOfQuestions = it.getString(NUMBER_OF_QUESTIONS)
+        }
     }
 
     override fun onCreateView(
@@ -35,19 +47,29 @@ class ResultFragment : Fragment(), ResultFragmentAction {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val result = arguments?.getString(RESULT)
-        val numberOfQuestion = arguments?.get(NUMBER_OF_QUESTION)
-        val resultTextView = "Your result: $result/$numberOfQuestion "
+
+        val mQuestionsList: ArrayList<Question>? = null
+        val count =
+            mQuestionsList?.count { question -> question.correctAnswer == question.checkedRadioButtonId }
+
         binding.apply {
-            textResult.text = resultTextView
+
             icShare.setOnClickListener {
-                result?.let { it1 -> resultAction?.submitResult(it1) }
+                val intent = Intent().apply {
+                    action = Intent.ACTION_SENDTO
+                    data = Uri.parse("mailto")
+                    val body = StringBuilder("${binding.textResult.text}\n\n")
+
+                }
             }
+
+
+
             icRepeat.setOnClickListener {
                 resultAction?.repeatQuiz()
             }
             icClose.setOnClickListener {
-                resultAction?.closeApp()
+                requireActivity().finish()
             }
         }
     }
@@ -63,32 +85,22 @@ class ResultFragment : Fragment(), ResultFragmentAction {
         resultAction = null
     }
 
-
-    override fun submitResult(result: String) {
-        TODO("Not yet implemented")
-    }
-
-    override fun closeApp() {
-
-    }
-
-    override fun repeatQuiz() {
-        TODO("Not yet implemented")
-    }
-
-
     companion object {
-        private const val RESULT = "totalResult"
-        private const val NUMBER_OF_QUESTION = "numberOfQuestion"
+        private const val RESULT = "result"
+        private const val NUMBER_OF_QUESTIONS = "numberOfQuestions"
+
         fun newInstance(result: String, numberOfQuestion: String): Fragment {
             return ResultFragment().apply {
                 arguments = Bundle().apply {
                     putString(RESULT, result)
-                    putString(NUMBER_OF_QUESTION, numberOfQuestion)
+                    putString(NUMBER_OF_QUESTIONS, numberOfQuestions)
                 }
             }
+
+
         }
     }
-
 }
+
+
 
