@@ -15,8 +15,7 @@ import com.rsschool.quiz.data.Constants
 import com.rsschool.quiz.data.model.Question
 import com.rsschool.quiz.databinding.FragmentQuizBinding
 
-
-class QuizQuestionsFragment : Fragment(){
+class QuizQuestionsFragment : Fragment() {
 
     private var numOfQuestion: Int? = null
     private var correctAnswers: Int? = null
@@ -55,11 +54,15 @@ class QuizQuestionsFragment : Fragment(){
         mQuestionsList = Constants.getQuestions()
         setQuestion()
 
+
         binding.nextButton.isEnabled = false
         binding.toolbar.title = "Question $numOfQuestion"
-        if (binding.radioGroup.checkedRadioButtonId == 1) {
-            binding.nextButton.isEnabled = true
-        }
+        //TODO дописать обработку кнопки next при выборе ответа
+
+//correctAnswer = count
+
+        val count =
+            mQuestionsList?.count { question -> question.correctAnswer == question.checkedRadioButtonId }
 
 
         when (numOfQuestion) {
@@ -68,52 +71,12 @@ class QuizQuestionsFragment : Fragment(){
         }
 
         binding.toolbar.setOnClickListener {
-            onBackPressed()
+            //TODO дописать обработку кнопки назад
         }
-
-        onNextPressed()
-        onPreviousPressed()
-
-        binding.radioGroup.setOnCheckedChangeListener { _, i ->
-            binding.nextButton.isEnabled = true
-            numOfQuestion?.let { answers?.set(it, i) }
-
-        }
-      /*  numOfQuestion?.let {
-            answers?.get(it)?.let {
-                if (answers!![numOfQuestion!!] != 0)
-                    binding.radioGroup.check(it)
-            }
-        }*/
-
-
-
-        /*binding.nextButton.setOnClickListener {
-            if (mSelectedOption == 0) {
-                next?.isEnabled = false
-            }
-        }
-
-        binding.previousButton.setOnClickListener {
-            if (mCurrentPosition == 1) {
-                previous?.isEnabled = false
-            }
-        }*/
-
-
-
-
-
-
 
         return binding.root
     }
 
-   /* @SuppressLint("SetTextI18n")
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-    }*/
 
     override fun onDetach() {
         super.onDetach()
@@ -159,36 +122,6 @@ class QuizQuestionsFragment : Fragment(){
         }
     }
 
-    private fun onBackPressed() {
-        binding.radioGroup.also {
-            val selected = it.findViewById<RadioButton>(it.checkedRadioButtonId)
-            if (selected != null && selected.id == mQuestionsList!![numOfQuestion!!].correctAnswer) {
-                correctAnswers = correctAnswers?.dec()
-            }
-        }
-        numOfQuestion = numOfQuestion?.dec()
-        passData?.openQuestion(numOfQuestion, correctAnswers, answers)
-    }
-
-    private fun onPreviousPressed() {
-        binding.previousButton.setOnClickListener {
-            onBackPressed()
-        }
-    }
-
-    private fun onNextPressed() {
-        binding.nextButton.setOnClickListener {
-            binding.radioGroup.also {
-                val selected = it.findViewById<RadioButton>(it.checkedRadioButtonId)
-                if (selected != null && selected.id == mQuestionsList!![numOfQuestion!!].correctAnswer) {
-                    correctAnswers = correctAnswers?.inc()
-                }
-            }
-            numOfQuestion = numOfQuestion?.inc()
-            passData?.openQuestion(numOfQuestion, correctAnswers, answers)
-        }
-    }
-
     companion object {
 
         private const val NUMBER_OF_QUESTION = "numberOfQuestion"
@@ -207,9 +140,6 @@ class QuizQuestionsFragment : Fragment(){
             }
         }
     }
-
-
-
 
 }
 

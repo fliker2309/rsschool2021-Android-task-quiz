@@ -19,9 +19,8 @@ class MainActivity : AppCompatActivity(), ClickListener,PassData {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.container, QuizQuestionsFragment.newInstance(0,0, intArrayOf(0)))
-                .commit()
+            openQuizFragment(0,0, intArrayOf(0))
+
         }
     }
 
@@ -32,9 +31,9 @@ class MainActivity : AppCompatActivity(), ClickListener,PassData {
             .commit()
     }
 
-    private fun openResultFragment(result: String, numberOfQuestion: String){
+    private fun openResultFragment(result: Int, totalQuestions: Int){
         supportFragmentManager.beginTransaction()
-            .replace(binding.container.id,ResultFragment.newInstance(result, numberOfQuestion))
+            .replace(binding.container.id,ResultFragment.newInstance(result, totalQuestions))
             .commit()
     }
 
@@ -44,14 +43,11 @@ class MainActivity : AppCompatActivity(), ClickListener,PassData {
     }
 
     override fun repeatQuiz() {
-    //TODO
+        openQuizFragment(0,0, intArrayOf(0))
     }
 
     override fun openQuestion(numOfQuestion: Int?, correctAnswers: Int?, answers: IntArray?) {
-        if (numOfQuestion != null && correctAnswers != null && numOfQuestion < 5)
-            openQuizFragment(numOfQuestion, correctAnswers, answers)
-        if (numOfQuestion != null && correctAnswers != null && numOfQuestion == 5)
-            openResultFragment(correctAnswers, numberOfQuestion)
+    //TODO
     }
 
 }

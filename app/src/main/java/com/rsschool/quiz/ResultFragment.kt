@@ -14,8 +14,8 @@ import com.rsschool.quiz.databinding.FragmentResultBinding
 
 class ResultFragment : Fragment() {
 
-    private var result: String? = null
-    private var numberOfQuestions: String? = null
+    private var result: Int? = null
+    private var totalQuestions: Int? = null
 
     private var _binding: FragmentResultBinding? = null
     private val binding: FragmentResultBinding
@@ -31,8 +31,8 @@ class ResultFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            result = it.getString(RESULT)
-            numberOfQuestions = it.getString(NUMBER_OF_QUESTIONS)
+            result = it.getInt(RESULT)
+            totalQuestions = it.getInt(TOTAL_QUESTIONS)
         }
     }
 
@@ -48,9 +48,6 @@ class ResultFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val mQuestionsList: ArrayList<Question>? = null
-        val count =
-            mQuestionsList?.count { question -> question.correctAnswer == question.checkedRadioButtonId }
 
         binding.apply {
 
@@ -58,12 +55,10 @@ class ResultFragment : Fragment() {
                 val intent = Intent().apply {
                     action = Intent.ACTION_SENDTO
                     data = Uri.parse("mailto")
-                    val body = StringBuilder("${binding.textResult.text}\n\n")
+
 
                 }
             }
-
-
 
             icRepeat.setOnClickListener {
                 resultAction?.repeatQuiz()
@@ -87,17 +82,15 @@ class ResultFragment : Fragment() {
 
     companion object {
         private const val RESULT = "result"
-        private const val NUMBER_OF_QUESTIONS = "numberOfQuestions"
+        private const val TOTAL_QUESTIONS = "totalQuestions"
 
-        fun newInstance(result: String, numberOfQuestion: String): Fragment {
+        fun newInstance(result: Int, totalQuestions: Int): Fragment {
             return ResultFragment().apply {
                 arguments = Bundle().apply {
-                    putString(RESULT, result)
-                    putString(NUMBER_OF_QUESTIONS, numberOfQuestions)
+                    putInt(RESULT, result)
+                    putInt(TOTAL_QUESTIONS, totalQuestions)
                 }
             }
-
-
         }
     }
 }
