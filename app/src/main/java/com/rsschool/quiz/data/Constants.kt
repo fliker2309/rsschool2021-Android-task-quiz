@@ -8,73 +8,63 @@ object Constants {
 
         val questionList = ArrayList<Question>()
         val question1 = Question(
-            1,
+            0,
             "What is the capital of Great Britain?",
-            " Madrid",
+            " Madrid", //лондон
             "London",
-            "Paris",
+            "Paris", //1
             "Istanbul",
             "Manchester",
-            2,
-            0,
-
-        )
+            "London",
+            )
         questionList.add(question1)
 
         val question2 = Question(
-            2,
+            1,
             "Who won the 2018 FIFA World Cup?",
             "France",
-            "Croatia",
-            "Russia",
+            "Croatia",//бельгия
+            "Russia", //1
             "Belgium",
             "England",
-            1,
-            0,
-
-        )
+            "France"
+            )
         questionList.add(question2)
 
         val question3 = Question(
-            3,
+            2,
             "In what year did Yuri Gagarin flew into space?",
             "1957",
             "1968",
             "1959",
             "1961",
             "1969",
-            4,
-            0,
-
-        )
+            "1961"
+            )
         questionList.add(question3)
 
         val question4 = Question(
-            4,
+            3,
             "Who is the developer of Kotlin??",
             "Google",
             "Intellij IDEA",
             "JetBrains",
-            "Eclipse",
+            "Eclipse", //ничего
             "Oracle",
-            3,
-            0,
-
-        )
+            "JetBrains"
+            )
         questionList.add(question4)
 
         val question5 = Question(
-            5,
+            4,
             "Who wrote the book The Little Prince?",
             "Daniel Defoe",
             "Oscar Wilde ",
-            "Lewis Carroll",
+            "Lewis Carroll", //1
             "William Shakespeare",
             "Antoine de Saint-Exupéry",
-            5,
-            0,
-
-        )
+            "Antoine de Saint-Exupéry" //дефо
+            )
         questionList.add(question5)
 
         return questionList

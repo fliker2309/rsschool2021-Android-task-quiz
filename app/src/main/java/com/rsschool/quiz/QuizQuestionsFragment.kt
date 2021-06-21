@@ -1,15 +1,11 @@
 package com.rsschool.quiz
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.RadioButton
-import androidx.activity.OnBackPressedCallback
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import com.rsschool.quiz.data.Constants
 import com.rsschool.quiz.data.model.Question
@@ -40,7 +36,7 @@ class QuizQuestionsFragment : Fragment() {
         arguments?.let {
             numOfQuestion = it.getInt(NUMBER_OF_QUESTION)
             correctAnswers = it.getInt(CORRECT_ANSWERS)
-            answers = it.getIntArray(ANSWERS)
+            answers = it.getIntArray(ANSWERS_LIST)
         }
     }
 
@@ -49,29 +45,38 @@ class QuizQuestionsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        numOfQuestion?.let { changeTheme(it) }
         _binding = FragmentQuizBinding.inflate(inflater, container, false)
+        numOfQuestion?.let { changeTheme(it) }
         mQuestionsList = Constants.getQuestions()
+
         setQuestion()
-
-
         binding.nextButton.isEnabled = false
-        binding.toolbar.title = "Question $numOfQuestion"
-        //TODO дописать обработку кнопки next при выборе ответа
 
-//correctAnswer = count
-
-        val count =
-            mQuestionsList?.count { question -> question.correctAnswer == question.checkedRadioButtonId }
-
-
-        when (numOfQuestion) {
-            1 -> binding.previousButton.isEnabled = false
-            5 -> binding.nextButton.text = "Submit"
+        binding.toolbar.title = "Question ${numOfQuestion?.plus(1)}"
+        binding.toolbar.setOnClickListener {
+            if (numOfQuestion != 0)
+                onBackClickListener()
         }
 
-        binding.toolbar.setOnClickListener {
-            //TODO дописать обработку кнопки назад
+        onPreviousClickListener()
+        onNextClickListener()
+
+        binding.radioGroup.setOnCheckedChangeListener { group, checkedId ->
+            binding.nextButton.isEnabled = true
+            numOfQuestion?.let { answers?.set(it, checkedId) }
+        }
+
+        numOfQuestion?.let {
+            answers?.get(it)?.let {
+                if (answers!![numOfQuestion!!] != 0)
+                    binding.radioGroup.check(it)
+            }
+        }
+
+        when (numOfQuestion) {
+            0 -> binding.previousButton.isEnabled = false
+            4 -> binding.nextButton.text = "Submit"
+            else -> binding.previousButton.isEnabled = true
         }
 
         return binding.root
@@ -109,7 +114,7 @@ class QuizQuestionsFragment : Fragment() {
     }
 
     private fun setQuestion() {
-        val thisQuestion = mQuestionsList?.get(numOfQuestion!! - 1)
+        val thisQuestion = mQuestionsList?.get(numOfQuestion!!)
         binding.apply {
             if (thisQuestion != null) {
                 question.text = thisQuestion.question
@@ -122,11 +127,41 @@ class QuizQuestionsFragment : Fragment() {
         }
     }
 
+    private fun onBackClickListener() {
+        binding.radioGroup.also {
+            val selected = it.findViewById<RadioButton>(it.checkedRadioButtonId)
+            if (selected != null && selected.text == mQuestionsList!![numOfQuestion!!].correctAnswer) {
+                correctAnswers = correctAnswers?.dec()
+            }
+        }
+        numOfQuestion = numOfQuestion?.dec()
+        passData?.openQuestion(numOfQuestion, correctAnswers, answers)
+    }
+
+    private fun onPreviousClickListener() {
+        binding.previousButton.setOnClickListener {
+            onBackClickListener()
+        }
+    }
+
+    private fun onNextClickListener() {
+        binding.nextButton.setOnClickListener {
+            binding.radioGroup.also {
+                val selected = it.findViewById<RadioButton>(it.checkedRadioButtonId)
+                if (selected.text == mQuestionsList!![numOfQuestion!!].correctAnswer) {
+                    correctAnswers = correctAnswers?.inc()
+                }
+            }
+            numOfQuestion = numOfQuestion?.inc()
+            passData?.openQuestion(numOfQuestion, correctAnswers, answers)
+        }
+    }
+
     companion object {
 
         private const val NUMBER_OF_QUESTION = "numberOfQuestion"
         private const val CORRECT_ANSWERS = "correctAnswers"
-        private const val ANSWERS = "answers"
+        private const val ANSWERS_LIST = "answers"
 
         fun newInstance(
             numOfQuestion: Int,
@@ -136,7 +171,7 @@ class QuizQuestionsFragment : Fragment() {
             arguments = Bundle().apply {
                 putInt(NUMBER_OF_QUESTION, numOfQuestion)
                 putInt(CORRECT_ANSWERS, correctAnswers)
-                putIntArray(ANSWERS, answers)
+                putIntArray(ANSWERS_LIST, answers)
             }
         }
     }

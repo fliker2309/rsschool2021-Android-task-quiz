@@ -1,9 +1,5 @@
 package com.rsschool.quiz.data.model
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
-
-@Parcelize
 data class Question(
     val id: Int,
     val question: String,
@@ -12,6 +8,5 @@ data class Question(
     val optionThree: String,
     val optionFour: String,
     val optionFive: String,
-    val correctAnswer: Int,
-    var checkedRadioButtonId: Int,
-) : Parcelable
+    val correctAnswer: String,
+)
