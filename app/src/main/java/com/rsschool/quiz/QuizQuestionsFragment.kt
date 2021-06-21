@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import com.rsschool.quiz.data.Constants
 import com.rsschool.quiz.data.model.Question
@@ -52,11 +53,14 @@ class QuizQuestionsFragment : Fragment() {
         setQuestion()
         binding.nextButton.isEnabled = false
 
-        binding.toolbar.title = "Question ${numOfQuestion?.plus(1)}"
-        binding.toolbar.setOnClickListener {
-            if (numOfQuestion != 0)
+        when (numOfQuestion) {
+            0 -> binding.toolbar.navigationIcon = null
+            else -> binding.toolbar.setOnClickListener {
                 onBackClickListener()
+            }
         }
+
+        binding.toolbar.title = "Question ${numOfQuestion?.plus(1)}"
 
         onPreviousClickListener()
         onNextClickListener()
@@ -82,6 +86,15 @@ class QuizQuestionsFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                onBackClickListener()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+    }
 
     override fun onDetach() {
         super.onDetach()
@@ -95,21 +108,11 @@ class QuizQuestionsFragment : Fragment() {
 
     private fun changeTheme(numOfQuestion: Int) {
         when (numOfQuestion % 5) {
-            0 -> {
-                requireContext().setTheme(R.style.Theme_Quiz_First)
-            }
-            1 -> {
-                requireContext().setTheme(R.style.Theme_Quiz_Second)
-            }
-            2 -> {
-                requireContext().setTheme(R.style.Theme_Quiz_Third)
-            }
-            3 -> {
-                requireContext().setTheme(R.style.Theme_Quiz_Fourth)
-            }
-            4 -> {
-                requireContext().setTheme(R.style.Theme_Quiz_Fifth)
-            }
+            0 -> requireContext().setTheme(R.style.Theme_Quiz_First)
+            1 -> requireContext().setTheme(R.style.Theme_Quiz_Second)
+            2 -> requireContext().setTheme(R.style.Theme_Quiz_Third)
+            3 -> requireContext().setTheme(R.style.Theme_Quiz_Fourth)
+            4 -> requireContext().setTheme(R.style.Theme_Quiz_Fifth)
         }
     }
 
