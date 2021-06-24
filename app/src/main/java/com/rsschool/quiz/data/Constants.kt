@@ -4,19 +4,24 @@ import com.rsschool.quiz.data.model.Question
 
 object Constants {
 
+    fun getAnswers(): ArrayList<Int> {
+        return arrayListOf(1, 0, 3, 2, 4)
+    }
+
     fun getQuestions(): ArrayList<Question> {
 
         val questionList = ArrayList<Question>()
+        val answersList = ArrayList<Int>()
         val question1 = Question(
             0,
             "What is the capital of Great Britain?",
-            " Madrid", //лондон
+            "Madrid", //лондон
             "London",
             "Paris", //1
             "Istanbul",
             "Manchester",
-            "London",
-            )
+            1,
+        )
         questionList.add(question1)
 
         val question2 = Question(
@@ -27,8 +32,8 @@ object Constants {
             "Russia", //1
             "Belgium",
             "England",
-            "France"
-            )
+            0
+        )
         questionList.add(question2)
 
         val question3 = Question(
@@ -39,8 +44,8 @@ object Constants {
             "1959",
             "1961",
             "1969",
-            "1961"
-            )
+            3
+        )
         questionList.add(question3)
 
         val question4 = Question(
@@ -51,8 +56,8 @@ object Constants {
             "JetBrains",
             "Eclipse", //ничего
             "Oracle",
-            "JetBrains"
-            )
+            2
+        )
         questionList.add(question4)
 
         val question5 = Question(
@@ -63,8 +68,8 @@ object Constants {
             "Lewis Carroll", //1
             "William Shakespeare",
             "Antoine de Saint-Exupéry",
-            "Antoine de Saint-Exupéry" //дефо
-            )
+            4 //дефо
+        )
         questionList.add(question5)
 
         return questionList

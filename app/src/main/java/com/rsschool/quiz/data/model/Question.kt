@@ -8,5 +8,5 @@ data class Question(
     val optionThree: String,
     val optionFour: String,
     val optionFive: String,
-    val correctAnswer: String,
+    val correctAnswer: Int,
 )

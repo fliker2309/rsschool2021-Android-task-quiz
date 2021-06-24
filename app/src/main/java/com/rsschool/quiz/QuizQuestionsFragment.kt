@@ -133,7 +133,7 @@ class QuizQuestionsFragment : Fragment() {
     private fun onBackClickListener() {
         binding.radioGroup.also {
             val selected = it.findViewById<RadioButton>(it.checkedRadioButtonId)
-            if (selected != null && selected.text == mQuestionsList!![numOfQuestion!!].correctAnswer) {
+            if (selected != null /*&& selected.text == mQuestionsList!![numOfQuestion!!].correctAnswer*/) {
                 correctAnswers = correctAnswers?.dec()
             }
         }
