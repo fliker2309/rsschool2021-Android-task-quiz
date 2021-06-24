@@ -6,38 +6,36 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.forEachIndexed
 import androidx.fragment.app.Fragment
 import com.rsschool.quiz.data.Constants
 import com.rsschool.quiz.data.model.Question
 import com.rsschool.quiz.databinding.FragmentQuizBinding
+import java.lang.reflect.Array.set
 
 class QuizQuestionsFragment : Fragment() {
 
     private var numOfQuestion: Int? = null
-    private var correctAnswers: Int? = null
-    private var answers: IntArray? = null
+    private var quizQuestion: Question? = null
     private var mQuestionsList: ArrayList<Question>? = null
-    private var passData: PassData? = null
+    private var passData: QuizInterface? = null
 
     private var _binding: FragmentQuizBinding? = null
     private val binding: FragmentQuizBinding
         get() = _binding!!
 
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is PassData)
+        if (context is QuizInterface)
             passData = context
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             numOfQuestion = it.getInt(NUMBER_OF_QUESTION)
-            correctAnswers = it.getInt(CORRECT_ANSWERS)
-            answers = it.getIntArray(ANSWERS_LIST)
         }
     }
 
@@ -48,40 +46,42 @@ class QuizQuestionsFragment : Fragment() {
     ): View {
         _binding = FragmentQuizBinding.inflate(inflater, container, false)
         numOfQuestion?.let { changeTheme(it) }
+
         mQuestionsList = Constants.getQuestions()
+        binding.apply {
+            if (quizQuestion?.userAnswer != -1) {
+                radioGroup.forEachIndexed { index, view ->
+                    if (index == quizQuestion?.userAnswer) {
+                        radioGroup.check(view.id)
+                    }
+                }
+            }
 
-        setQuestion()
-        binding.nextButton.isEnabled = false
+            enableButton()
 
-        when (numOfQuestion) {
-            0 -> binding.toolbar.navigationIcon = null
-            else -> binding.toolbar.setOnClickListener {
-                onBackClickListener()
+
+
+
+            setQuestion()
+            onPreviousClickListener()
+            onNextClickListener()
+            nextButton.isEnabled = false
+            toolbar.title = "Question ${numOfQuestion?.plus(1)}"
+
+            radioGroup.setOnCheckedChangeListener { _, _ ->
+                radioGroup.forEachIndexed { index, view ->
+                    if ((view as RadioButton).isChecked) {
+                        quizQuestion?.userAnswer = index
+                        Toast.makeText(context, "$index", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
             }
         }
+        binding.nextButton.isEnabled = true
 
-        binding.toolbar.title = "Question ${numOfQuestion?.plus(1)}"
 
-        onPreviousClickListener()
-        onNextClickListener()
 
-        binding.radioGroup.setOnCheckedChangeListener { group, checkedId ->
-            binding.nextButton.isEnabled = true
-            numOfQuestion?.let { answers?.set(it, checkedId) }
-        }
-
-        numOfQuestion?.let {
-            answers?.get(it)?.let {
-                if (answers!![numOfQuestion!!] != 0)
-                    binding.radioGroup.check(it)
-            }
-        }
-
-        when (numOfQuestion) {
-            0 -> binding.previousButton.isEnabled = false
-            4 -> binding.nextButton.text = "Submit"
-            else -> binding.previousButton.isEnabled = true
-        }
 
         return binding.root
     }
@@ -131,14 +131,9 @@ class QuizQuestionsFragment : Fragment() {
     }
 
     private fun onBackClickListener() {
-        binding.radioGroup.also {
-            val selected = it.findViewById<RadioButton>(it.checkedRadioButtonId)
-            if (selected != null /*&& selected.text == mQuestionsList!![numOfQuestion!!].correctAnswer*/) {
-                correctAnswers = correctAnswers?.dec()
-            }
-        }
+        quizQuestion?.userAnswer = -1
         numOfQuestion = numOfQuestion?.dec()
-        passData?.openQuestion(numOfQuestion, correctAnswers, answers)
+        passData?.openQuestion(numOfQuestion)
     }
 
     private fun onPreviousClickListener() {
@@ -148,33 +143,65 @@ class QuizQuestionsFragment : Fragment() {
     }
 
     private fun onNextClickListener() {
+        /* binding.apply {
+             if (quizQuestion?.userAnswer != -1) {
+                 radioGroup.forEachIndexed { index, view ->
+                     if (index == quizQuestion?.userAnswer) {
+                         radioGroup.check(view.id)
+                     }
+                 }
+             }
+         }
+         binding.radioGroup.setOnCheckedChangeListener { group, _ ->
+             group.forEachIndexed { index, view ->
+                 if ((view as RadioButton).isChecked) {
+                     quizQuestion?.userAnswer = index
+                     Toast.makeText(context, "$index", Toast.LENGTH_SHORT).show()
+                 }
+             }
+
+             binding.nextButton.isEnabled = true
+         }*/
+
+
         binding.nextButton.setOnClickListener {
-            binding.radioGroup.also {
-                val selected = it.findViewById<RadioButton>(it.checkedRadioButtonId)
-                if (selected.text == mQuestionsList!![numOfQuestion!!].correctAnswer) {
-                    correctAnswers = correctAnswers?.inc()
-                }
+            when (binding.radioGroup.checkedRadioButtonId) {
+                0 -> quizQuestion?.userAnswer = 0
+                1 -> quizQuestion?.userAnswer = 1
+                2 -> quizQuestion?.userAnswer = 2
+                3 -> quizQuestion?.userAnswer = 3
+                4 -> quizQuestion?.userAnswer = 4
             }
+            Toast.makeText(context, "${quizQuestion?.userAnswer}", Toast.LENGTH_SHORT).show()
             numOfQuestion = numOfQuestion?.inc()
-            passData?.openQuestion(numOfQuestion, correctAnswers, answers)
+            passData?.openQuestion(numOfQuestion)
+        }
+    }
+
+    private fun enableButton() {
+
+        binding.apply {
+            when (numOfQuestion) {
+                0 -> previousButton.isEnabled = false
+                4 -> nextButton.text = "Submit"
+                else -> previousButton.isEnabled = true
+            }
+
+            if (numOfQuestion == 0) {
+                toolbar.navigationIcon = null
+            } else toolbar.setOnClickListener {
+                onBackClickListener()
+            }
         }
     }
 
     companion object {
 
         private const val NUMBER_OF_QUESTION = "numberOfQuestion"
-        private const val CORRECT_ANSWERS = "correctAnswers"
-        private const val ANSWERS_LIST = "answers"
 
-        fun newInstance(
-            numOfQuestion: Int,
-            correctAnswers: Int,
-            answers: IntArray?
-        ): QuizQuestionsFragment = QuizQuestionsFragment().apply {
+        fun newInstance(numOfQuestion: Int) = QuizQuestionsFragment().apply {
             arguments = Bundle().apply {
                 putInt(NUMBER_OF_QUESTION, numOfQuestion)
-                putInt(CORRECT_ANSWERS, correctAnswers)
-                putIntArray(ANSWERS_LIST, answers)
             }
         }
     }

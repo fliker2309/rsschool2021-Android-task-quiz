@@ -2,10 +2,12 @@ package com.rsschool.quiz
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.rsschool.quiz.data.Constants
+import com.rsschool.quiz.data.model.Question
 import com.rsschool.quiz.databinding.ActivityMainBinding
 
 
-class MainActivity : AppCompatActivity(), ClickListener, PassData {
+class MainActivity : AppCompatActivity(), QuizInterface {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -15,44 +17,67 @@ class MainActivity : AppCompatActivity(), ClickListener, PassData {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         if (savedInstanceState == null) {
-            openQuizFragment(0, 0, intArrayOf(0, 0, 0, 0, 0))
+            openQuizFragment(0)
         }
     }
 
-    private fun openQuizFragment(
-        previousNumber: Int,
-        correctAnswers: Int,
-        answers: IntArray?
-    ) {
+    private fun openQuizFragment(previousNumber: Int) {
         supportFragmentManager.beginTransaction()
-            .replace(
-                binding.container.id,
-                QuizQuestionsFragment.newInstance(previousNumber, correctAnswers, answers)
-            )
+            .replace(binding.container.id, QuizQuestionsFragment.newInstance(previousNumber))
             .commit()
     }
 
-    private fun openResultFragment(result: Int, answers: IntArray?) {
+    private fun openResultFragment() {
         supportFragmentManager.beginTransaction()
-            .replace(
-                binding.container.id,
-                ResultFragment.newInstance(result, answers)
-            )
+            .replace(binding.container.id, ResultFragment.newInstance())
             .commit()
     }
 
     override fun repeatQuiz() {
-        openQuizFragment(0, 0, intArrayOf(0, 0, 0, 0, 0))
+        openQuizFragment(0)
     }
 
-    override fun openQuestion(
-        numOfQuestion: Int?,
-        correctAnswers: Int?,
-        answers: IntArray?
-    ) {
+    override fun countResult(): String {
+        var resultCount = 0
+        val questions = Constants.getQuestions()
+        for (question in questions) {
+            if (question.userAnswer == question.correctAnswer)
+                resultCount++
+        }
+
+        return "You result is $resultCount of ${questions.size}"
+    }
+
+    override fun getShareText(): String {
+        val resultStr: StringBuilder = StringBuilder("You complete the quiz! ")
+        resultStr.append(countResult()).append("\n")
+
+        val questions = Constants.getQuestions()
+        for ((index, question) in questions.withIndex()) {
+            resultStr.append("$index").append(".")
+            resultStr.append(question.question).append("\n")
+            resultStr.append("You answered: ${question.userAnswer} ")
+            when (question.userAnswer) {
+                0 -> resultStr.append(question.optionOne)
+                1 -> resultStr.append(question.optionTwo)
+                2 -> resultStr.append(question.optionThree)
+                3 -> resultStr.append(question.optionFour)
+                4 -> resultStr.append(question.optionFive)
+            }
+            resultStr.append("\nCorrect is: ${question.correctAnswer}\n")
+        }
+        return resultStr.toString()
+    }
+
+    override fun closeApp() {
+        finish()
+    }
+
+    override fun openQuestion(numOfQuestion: Int?) {
         when (numOfQuestion) {
-            0, 1, 2, 3, 4 -> correctAnswers?.let { openQuizFragment(numOfQuestion, it, answers) }
-            5 -> correctAnswers?.let { openResultFragment(it, answers) }
+            5 -> openResultFragment()
+            else -> openQuizFragment(numOfQuestion!!)
+
         }
     }
 
