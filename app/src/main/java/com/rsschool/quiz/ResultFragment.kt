@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.rsschool.quiz.data.Constants
 import com.rsschool.quiz.databinding.FragmentResultBinding
 
 class ResultFragment : Fragment() {
@@ -50,33 +49,6 @@ class ResultFragment : Fragment() {
             return binding.root
         }
     }
-/*
-    private fun prepareMessage(countResults: String): String {
-        val resultStr: StringBuilder = StringBuilder("Your result is: ")
-        resultStr.append(result).append("!").append("\n")
-
-        val questions = Constants.getQuestions()
-        val correctAnswers = Constants.getAnswers()
-
-
-
-
-
-        for ((count, question) in questions.withIndex()) {
-            resultStr.append("$count").append(".")
-            resultStr.append(question.question).append("\n")
-            resultStr.append("You answered: ")
-            when (answers?.get(count).toString().last()) {
-                '2' -> resultStr.append(question.optionOne)
-                '4' -> resultStr.append(question.optionTwo)
-                '3' -> resultStr.append(question.optionThree)
-                '1' -> resultStr.append(question.optionFour)
-                '0' -> resultStr.append(question.optionFive)
-            }
-            resultStr.append("\nCorrect is: ${question.correctAnswer}\n")
-        }
-        return resultStr.toString()
-    }*/
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -89,9 +61,7 @@ class ResultFragment : Fragment() {
     }
 
     companion object {
-
         fun newInstance() = ResultFragment()
-
     }
 }
 

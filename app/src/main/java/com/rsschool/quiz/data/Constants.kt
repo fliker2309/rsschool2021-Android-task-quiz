@@ -4,10 +4,6 @@ import com.rsschool.quiz.data.model.Question
 
 object Constants {
 
-    /*fun getAnswers(): ArrayList<Int> {
-        return arrayListOf(1, 0, 3, 2, 4)
-    }*/
-
     fun getQuestions(): ArrayList<Question> {
         val questionList = ArrayList<Question>()
         val question1 = Question(

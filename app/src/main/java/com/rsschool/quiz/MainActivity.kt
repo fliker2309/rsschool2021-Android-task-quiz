@@ -3,9 +3,7 @@ package com.rsschool.quiz
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.rsschool.quiz.data.Constants
-import com.rsschool.quiz.data.model.Question
 import com.rsschool.quiz.databinding.ActivityMainBinding
-
 
 class MainActivity : AppCompatActivity(), QuizInterface {
 
@@ -44,7 +42,6 @@ class MainActivity : AppCompatActivity(), QuizInterface {
             if (question.userAnswer == question.correctAnswer)
                 resultCount++
         }
-
         return "You result is $resultCount of ${questions.size}"
     }
 
@@ -77,7 +74,6 @@ class MainActivity : AppCompatActivity(), QuizInterface {
         when (numOfQuestion) {
             5 -> openResultFragment()
             else -> openQuizFragment(numOfQuestion!!)
-
         }
     }
 

@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment
 import com.rsschool.quiz.data.Constants
 import com.rsschool.quiz.data.model.Question
 import com.rsschool.quiz.databinding.FragmentQuizBinding
-import java.lang.reflect.Array.set
 
 class QuizQuestionsFragment : Fragment() {
 
@@ -58,10 +57,6 @@ class QuizQuestionsFragment : Fragment() {
             }
 
             enableButton()
-
-
-
-
             setQuestion()
             onPreviousClickListener()
             onNextClickListener()
@@ -71,17 +66,13 @@ class QuizQuestionsFragment : Fragment() {
             radioGroup.setOnCheckedChangeListener { _, _ ->
                 radioGroup.forEachIndexed { index, view ->
                     if ((view as RadioButton).isChecked) {
-                        quizQuestion?.userAnswer = index
+                        quizQuestion?.userAnswer = index //здесь должно присваиваться
                         Toast.makeText(context, "$index", Toast.LENGTH_SHORT).show()
                     }
                 }
-
             }
+            nextButton.isEnabled = true
         }
-        binding.nextButton.isEnabled = true
-
-
-
 
         return binding.root
     }
@@ -143,26 +134,6 @@ class QuizQuestionsFragment : Fragment() {
     }
 
     private fun onNextClickListener() {
-        /* binding.apply {
-             if (quizQuestion?.userAnswer != -1) {
-                 radioGroup.forEachIndexed { index, view ->
-                     if (index == quizQuestion?.userAnswer) {
-                         radioGroup.check(view.id)
-                     }
-                 }
-             }
-         }
-         binding.radioGroup.setOnCheckedChangeListener { group, _ ->
-             group.forEachIndexed { index, view ->
-                 if ((view as RadioButton).isChecked) {
-                     quizQuestion?.userAnswer = index
-                     Toast.makeText(context, "$index", Toast.LENGTH_SHORT).show()
-                 }
-             }
-
-             binding.nextButton.isEnabled = true
-         }*/
-
 
         binding.nextButton.setOnClickListener {
             when (binding.radioGroup.checkedRadioButtonId) {
@@ -205,7 +176,6 @@ class QuizQuestionsFragment : Fragment() {
             }
         }
     }
-
 }
 
 
