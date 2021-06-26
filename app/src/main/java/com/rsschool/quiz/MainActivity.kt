@@ -2,8 +2,11 @@ package com.rsschool.quiz
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.rsschool.quiz.data.Constants
 import com.rsschool.quiz.databinding.ActivityMainBinding
+
+private const val TAG = "myLog"
 
 class MainActivity : AppCompatActivity(), QuizInterface {
 
@@ -41,27 +44,28 @@ class MainActivity : AppCompatActivity(), QuizInterface {
         for (question in questions) {
             if (question.userAnswer == question.correctAnswer)
                 resultCount++
+            Log.d(TAG, "${question.userAnswer}")
         }
         return "You result is $resultCount of ${questions.size}"
     }
 
     override fun getShareText(): String {
-        val resultStr: StringBuilder = StringBuilder("You complete the quiz! ")
+        val resultStr: StringBuilder = StringBuilder("You complete the quiz!\n")
         resultStr.append(countResult()).append("\n")
-
         val questions = Constants.getQuestions()
         for ((index, question) in questions.withIndex()) {
-            resultStr.append("$index").append(".")
+            resultStr.append(index+1).append(".")
             resultStr.append(question.question).append("\n")
-            resultStr.append("You answered: ${question.userAnswer} ")
+            Log.d(TAG, "${question.userAnswer}")
             when (question.userAnswer) {
-                0 -> resultStr.append(question.optionOne)
-                1 -> resultStr.append(question.optionTwo)
-                2 -> resultStr.append(question.optionThree)
-                3 -> resultStr.append(question.optionFour)
-                4 -> resultStr.append(question.optionFive)
+
+                2131231002 -> resultStr.append("You answered: ${question.optionOne}\n")//213 123 1002
+                2131231004 -> resultStr.append("You answered: ${question.optionTwo}\n")//2131231004
+                2131231003 -> resultStr.append("You answered: ${question.optionThree}\n")//2131231003
+                2131231001 -> resultStr.append("You answered: ${question.optionFour}\n")//2131231001
+                2131231000 -> resultStr.append("You answered: ${question.optionFive}\n") //2131231000
             }
-            resultStr.append("\nCorrect is: ${question.correctAnswer}\n")
+            resultStr.append(question.userAnswer).append("TEST")
         }
         return resultStr.toString()
     }

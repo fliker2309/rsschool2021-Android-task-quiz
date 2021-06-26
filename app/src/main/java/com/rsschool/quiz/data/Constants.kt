@@ -8,9 +8,9 @@ object Constants {
         val questionList = ArrayList<Question>()
         val question1 = Question(
             "What is the capital of Great Britain?",
-            "Madrid", //лондон
+            "Madrid",
             "London",
-            "Paris", //1
+            "Paris",
             "Istanbul",
             "Manchester",
             1
@@ -20,8 +20,8 @@ object Constants {
         val question2 = Question(
             "Who won the 2018 FIFA World Cup?",
             "France",
-            "Croatia",//бельгия
-            "Russia", //1
+            "Croatia",
+            "Russia",
             "Belgium",
             "England",
             0
@@ -44,7 +44,7 @@ object Constants {
             "Google",
             "Intellij IDEA",
             "JetBrains",
-            "Eclipse", //ничего
+            "Eclipse",
             "Oracle",
             2
         )
@@ -54,7 +54,7 @@ object Constants {
             "Who wrote the book The Little Prince?",
             "Daniel Defoe",
             "Oscar Wilde ",
-            "Lewis Carroll", //1
+            "Lewis Carroll",
             "William Shakespeare",
             "Antoine de Saint-Exupéry",
             4

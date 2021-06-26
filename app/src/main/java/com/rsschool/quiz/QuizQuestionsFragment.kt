@@ -2,6 +2,7 @@ package com.rsschool.quiz
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,13 +15,14 @@ import com.rsschool.quiz.data.Constants
 import com.rsschool.quiz.data.model.Question
 import com.rsschool.quiz.databinding.FragmentQuizBinding
 
+private const val TAG = "myLog"
+
 class QuizQuestionsFragment : Fragment() {
 
     private var numOfQuestion: Int? = null
     private var quizQuestion: Question? = null
     private var mQuestionsList: ArrayList<Question>? = null
     private var passData: QuizInterface? = null
-
     private var _binding: FragmentQuizBinding? = null
     private val binding: FragmentQuizBinding
         get() = _binding!!
@@ -44,9 +46,18 @@ class QuizQuestionsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentQuizBinding.inflate(inflater, container, false)
+
         numOfQuestion?.let { changeTheme(it) }
 
         mQuestionsList = Constants.getQuestions()
+        quizQuestion = mQuestionsList!![numOfQuestion!!] //initialisation?
+        enableButton()
+        setQuestion()
+        onPreviousClickListener()
+        onNextClickListener()
+
+        binding.nextButton.isEnabled = false
+
         binding.apply {
             if (quizQuestion?.userAnswer != -1) {
                 radioGroup.forEachIndexed { index, view ->
@@ -55,23 +66,17 @@ class QuizQuestionsFragment : Fragment() {
                     }
                 }
             }
-
-            enableButton()
-            setQuestion()
-            onPreviousClickListener()
-            onNextClickListener()
-            nextButton.isEnabled = false
             toolbar.title = "Question ${numOfQuestion?.plus(1)}"
 
             radioGroup.setOnCheckedChangeListener { _, _ ->
                 radioGroup.forEachIndexed { index, view ->
                     if ((view as RadioButton).isChecked) {
-                        quizQuestion?.userAnswer = index //здесь должно присваиваться
-                        Toast.makeText(context, "$index", Toast.LENGTH_SHORT).show()
+                        quizQuestion?.userAnswer = index
+                        Log.e(TAG, "${quizQuestion?.userAnswer}")
                     }
+                    binding.nextButton.isEnabled = true
                 }
             }
-            nextButton.isEnabled = true
         }
 
         return binding.root
@@ -122,7 +127,6 @@ class QuizQuestionsFragment : Fragment() {
     }
 
     private fun onBackClickListener() {
-        quizQuestion?.userAnswer = -1
         numOfQuestion = numOfQuestion?.dec()
         passData?.openQuestion(numOfQuestion)
     }
@@ -136,14 +140,9 @@ class QuizQuestionsFragment : Fragment() {
     private fun onNextClickListener() {
 
         binding.nextButton.setOnClickListener {
-            when (binding.radioGroup.checkedRadioButtonId) {
-                0 -> quizQuestion?.userAnswer = 0
-                1 -> quizQuestion?.userAnswer = 1
-                2 -> quizQuestion?.userAnswer = 2
-                3 -> quizQuestion?.userAnswer = 3
-                4 -> quizQuestion?.userAnswer = 4
-            }
-            Toast.makeText(context, "${quizQuestion?.userAnswer}", Toast.LENGTH_SHORT).show()
+            quizQuestion?.userAnswer = binding.radioGroup.checkedRadioButtonId
+            Log.d(TAG, "${quizQuestion?.userAnswer}")
+
             numOfQuestion = numOfQuestion?.inc()
             passData?.openQuestion(numOfQuestion)
         }
