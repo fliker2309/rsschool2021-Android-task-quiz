@@ -56,26 +56,17 @@ class QuizQuestionsFragment : Fragment() {
         onNextClickListener()
 
         binding.nextButton.isEnabled = false
-        //при переходе на предыдущую страницу, чтение ИЗ дата класса наше ИД
+        //при переходе на предыдущую страницу, чтение ИЗ дата класса checkedID
         binding.run {
             if (quizQuestion?.selectedCheckedIdButton != -1) {
                 radioGroup.check(quizQuestion?.selectedCheckedIdButton!!)
-                Log.d(TAG, "Произошло чтение")
+                Log.d(TAG, "Произошло чтение SelectedCheckedIdButton : ${quizQuestion?.selectedCheckedIdButton}")
             } else
                 Log.d(TAG, "Чтения не произошло, т.к. переменная SelectedCheckedIdButton для вопроса $numOfQuestion = ${quizQuestion?.selectedCheckedIdButton}")
 
-
-           /* if (quizQuestion?.selectedCheckedIdButton != -1) {
-                radioGroup.forEachIndexed { g, id ->
-                    if (id == quizQuestion?.selectedCheckedIdButton) {
-                        radioGroup.check(id)
-                    }
-                }
-            }*///mb budet rabotat'       (для чтения при нажатии Превиус)
-
             toolbar.title = "Question ${numOfQuestion?.plus(1)}"
-            //чекнутый вариант ответа сохранить в датакласс !!!!!записьб ппри клике selectById
 
+            //чекнутый вариант ответа сохранить в датакласс !запись при клике selectById
             radioGroup.setOnCheckedChangeListener { group, checkedId ->
                 quizQuestion?.selectedCheckedIdButton = checkedId
                 binding.nextButton.isEnabled = true
