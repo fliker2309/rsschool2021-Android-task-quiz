@@ -35,6 +35,10 @@ class MainActivity : AppCompatActivity(), QuizInterface {
     }
 
     override fun repeatQuiz() {
+        val questions = Constants.getQuestions()
+        for(question in questions){
+            question.selectedCheckedIdButton = -1
+        }
         openQuizFragment(0)
     }
 
@@ -54,9 +58,8 @@ class MainActivity : AppCompatActivity(), QuizInterface {
         resultStr.append(countResult()).append("\n")
         val questions = Constants.getQuestions()
         for ((index, question) in questions.withIndex()) {
-            resultStr.append(index+1).append(".")
+            resultStr.append(index + 1).append(".")
             resultStr.append(question.question).append("\n")
-            Log.d(TAG, question.userAnswer)
             resultStr.append("You answered: ").append(question.userAnswer).append("\n")
         }
         return resultStr.toString()

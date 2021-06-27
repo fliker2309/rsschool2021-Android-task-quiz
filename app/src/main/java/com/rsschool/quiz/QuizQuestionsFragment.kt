@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
 import androidx.activity.OnBackPressedCallback
-import androidx.core.view.forEachIndexed
 import androidx.fragment.app.Fragment
 import com.rsschool.quiz.data.Constants
 import com.rsschool.quiz.data.model.Question
@@ -22,7 +21,7 @@ class QuizQuestionsFragment : Fragment() {
     private var quizQuestion: Question? = null
     private var mQuestionsList: ArrayList<Question>? = null
     private var passData: QuizInterface? = null
-    private var _binding: FragmentQuizBinding? = null
+    private var _binding: FragmentQuizBinding? = null // переменные  с нижним подчеркиванием - делать val, без- var, чтобы никто не мог изменить значение по ссылке
     private val binding: FragmentQuizBinding
         get() = _binding!!
 
@@ -44,12 +43,13 @@ class QuizQuestionsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        //сначала применение темы, после инфлейтим
+        numOfQuestion?.let { changeTheme(it) }
         _binding = FragmentQuizBinding.inflate(inflater, container, false)
 
-        numOfQuestion?.let { changeTheme(it) }
-
         mQuestionsList = Constants.getQuestions()
-        quizQuestion = mQuestionsList!![numOfQuestion!!] //initialisation?
+        //initialisation
+        quizQuestion = mQuestionsList!![numOfQuestion!!]
         enableButton()
         setQuestion()
         onPreviousClickListener()
@@ -61,6 +61,7 @@ class QuizQuestionsFragment : Fragment() {
             toolbar.title = "Question ${numOfQuestion?.plus(1)}"
             if (quizQuestion?.selectedCheckedIdButton != -1) {
                 radioGroup.check(quizQuestion?.selectedCheckedIdButton!!)
+                binding.nextButton.isEnabled = true
                 Log.d(TAG, "Произошло чтение SelectedCheckedIdButton : ${quizQuestion?.selectedCheckedIdButton}")
             } else
                 Log.d(TAG, "Чтения не произошло, т.к. переменная SelectedCheckedIdButton для вопроса $numOfQuestion = ${quizQuestion?.selectedCheckedIdButton}")
