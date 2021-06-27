@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity(), QuizInterface {
 
     override fun repeatQuiz() {
         val questions = Constants.getQuestions()
-        for(question in questions){
+        for (question in questions) {
             question.selectedCheckedIdButton = -1
         }
         openQuizFragment(0)

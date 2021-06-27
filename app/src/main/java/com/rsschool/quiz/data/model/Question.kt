@@ -8,6 +8,6 @@ data class Question(
     val optionFour: String,
     val optionFive: String,
     val correctAnswer: String,
-    var selectedCheckedIdButton : Int = -1,
+    var selectedCheckedIdButton: Int = -1,
     var userAnswer: String = ""
 )

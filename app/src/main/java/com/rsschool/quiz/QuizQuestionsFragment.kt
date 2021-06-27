@@ -62,16 +62,25 @@ class QuizQuestionsFragment : Fragment() {
             if (quizQuestion?.selectedCheckedIdButton != -1) {
                 radioGroup.check(quizQuestion?.selectedCheckedIdButton!!)
                 binding.nextButton.isEnabled = true
-                Log.d(TAG, "Произошло чтение SelectedCheckedIdButton : ${quizQuestion?.selectedCheckedIdButton}")
+                Log.d(
+                    TAG,
+                    "Произошло чтение SelectedCheckedIdButton : ${quizQuestion?.selectedCheckedIdButton}"
+                )
             } else
-                Log.d(TAG, "Чтения не произошло, т.к. переменная SelectedCheckedIdButton для вопроса $numOfQuestion = ${quizQuestion?.selectedCheckedIdButton}")
+                Log.d(
+                    TAG,
+                    "Чтения не произошло, т.к. переменная SelectedCheckedIdButton для вопроса $numOfQuestion = ${quizQuestion?.selectedCheckedIdButton}"
+                )
 
             //чекнутый вариант ответа сохранить в датакласс !запись при клике selectById
             radioGroup.setOnCheckedChangeListener { _, checkedId ->
                 quizQuestion?.selectedCheckedIdButton = radioGroup.checkedRadioButtonId
                 binding.nextButton.isEnabled = true
                 quizQuestion?.userAnswer = binding.radioGroup.findViewById<RadioButton>(checkedId).text.toString()
-                Log.d(TAG,"Произошла запись checkedID = $checkedId , ${quizQuestion?.userAnswer} в переменную selectedCheckedIdButton ${quizQuestion?.selectedCheckedIdButton} для вопроса $numOfQuestion")
+                Log.d(
+                    TAG,
+                    "Произошла запись checkedID = $checkedId , ${quizQuestion?.userAnswer} в переменную selectedCheckedIdButton ${quizQuestion?.selectedCheckedIdButton} для вопроса $numOfQuestion"
+                )
             }
         }
 
@@ -137,7 +146,10 @@ class QuizQuestionsFragment : Fragment() {
         binding.nextButton.setOnClickListener {
             numOfQuestion = numOfQuestion?.inc()
             passData?.openQuestion(numOfQuestion)
-            Log.d(TAG, "selectedCheckedId ${quizQuestion?.selectedCheckedIdButton} для вопроса $numOfQuestion")
+            Log.d(
+                TAG,
+                "selectedCheckedId ${quizQuestion?.selectedCheckedIdButton} для вопроса $numOfQuestion"
+            )
         }
     }
 
