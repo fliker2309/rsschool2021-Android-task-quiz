@@ -63,9 +63,8 @@ class QuizQuestionsFragment : Fragment() {
                 Log.d(TAG, "Произошло чтение")
             } else
                 Log.d(TAG, "Чтения не произошло, т.к. переменная SelectedCheckedIdButton для вопроса $numOfQuestion = ${quizQuestion?.selectedCheckedIdButton}")
-        }
 
-        binding.run {
+
            /* if (quizQuestion?.selectedCheckedIdButton != -1) {
                 radioGroup.forEachIndexed { g, id ->
                     if (id == quizQuestion?.selectedCheckedIdButton) {
@@ -73,7 +72,6 @@ class QuizQuestionsFragment : Fragment() {
                     }
                 }
             }*///mb budet rabotat'       (для чтения при нажатии Превиус)
-
 
             toolbar.title = "Question ${numOfQuestion?.plus(1)}"
             //чекнутый вариант ответа сохранить в датакласс !!!!!записьб ппри клике selectById
@@ -84,16 +82,6 @@ class QuizQuestionsFragment : Fragment() {
                 quizQuestion?.userAnswer = binding.radioGroup.findViewById<RadioButton>(checkedId).text.toString()
                 Log.d(TAG,"Произошла запись $checkedId , ${quizQuestion?.userAnswer} в переменную ${quizQuestion?.selectedCheckedIdButton} для вопроса $numOfQuestion")
             }
-
-            /*radioGroup.setOnCheckedChangeListener { g, id -> //неверно использовано(группа, чекИд) g,id  вернуть должен себя и айдишку
-                radioGroup.forEachIndexed { index, view -> //рассказ про адресаА и посылки, в лямбде-что с ними сделать
-                    if ((view as RadioButton).isChecked) {
-                        quizQuestion?.userAnswer = index
-                        Log.e(TAG, "${quizQuestion?.userAnswer}") // button по id вытянуть текст
-                    }
-                    binding.nextButton.isEnabled = true
-                }
-            }*/
         }
 
         return binding.root
@@ -163,10 +151,6 @@ class QuizQuestionsFragment : Fragment() {
 
     private fun onNextClickListener() {
         binding.nextButton.setOnClickListener {
-
-           /* quizQuestion?.selectedCheckedIdButton = binding.radioGroup.checkedRadioButtonId*/
-            /* Log.d(TAG, "${quizQuestion?.userAnswer}")*/
-
             numOfQuestion = numOfQuestion?.inc()
             passData?.openQuestion(numOfQuestion)
             Log.d(TAG, "${quizQuestion?.selectedCheckedIdButton} для вопроса $numOfQuestion")

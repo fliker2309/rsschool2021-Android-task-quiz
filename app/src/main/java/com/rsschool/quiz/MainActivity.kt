@@ -58,15 +58,6 @@ class MainActivity : AppCompatActivity(), QuizInterface {
             resultStr.append(question.question).append("\n")
             Log.d(TAG, question.userAnswer)
             resultStr.append("You answered: ").append(question.userAnswer).append("\n")
-           /* when (question.userAnswer) {
-
-                2131231002 -> resultStr.append("You answered: ${question.optionOne}\n")//213 123 1002
-                2131231004 -> resultStr.append("You answered: ${question.optionTwo}\n")//2131231004
-                2131231003 -> resultStr.append("You answered: ${question.optionThree}\n")//2131231003
-                2131231001 -> resultStr.append("You answered: ${question.optionFour}\n")//2131231001
-                2131231000 -> resultStr.append("You answered: ${question.optionFive}\n") //2131231000
-            }*/
-            resultStr.append(question.userAnswer).append("TEST")
         }
         return resultStr.toString()
     }
