@@ -7,6 +7,7 @@ data class Question(
     val optionThree: String,
     val optionFour: String,
     val optionFive: String,
-    val correctAnswer: Int,
-    var userAnswer: Int = -1
+    val correctAnswer: String,
+    var selectedCheckedIdButton : Int = -1,
+    var userAnswer: String = ""
 )

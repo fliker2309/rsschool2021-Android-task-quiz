@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.forEachIndexed
 import androidx.fragment.app.Fragment
@@ -57,26 +56,44 @@ class QuizQuestionsFragment : Fragment() {
         onNextClickListener()
 
         binding.nextButton.isEnabled = false
+        //при переходе на предыдущую страницу, чтение ИЗ дата класса наше ИД
+        binding.run {
+            if (quizQuestion?.selectedCheckedIdButton != -1) {
+                radioGroup.check(quizQuestion?.selectedCheckedIdButton!!)
+                Log.d(TAG, "Произошло чтение")
+            } else
+                Log.d(TAG, "Чтения не произошло, т.к. переменная SelectedCheckedIdButton для вопроса $numOfQuestion = ${quizQuestion?.selectedCheckedIdButton}")
+        }
 
-        binding.apply {
-            if (quizQuestion?.userAnswer != -1) {
-                radioGroup.forEachIndexed { index, view ->
-                    if (index == quizQuestion?.userAnswer) {
-                        radioGroup.check(view.id)
+        binding.run {
+           /* if (quizQuestion?.selectedCheckedIdButton != -1) {
+                radioGroup.forEachIndexed { g, id ->
+                    if (id == quizQuestion?.selectedCheckedIdButton) {
+                        radioGroup.check(id)
                     }
                 }
-            }
-            toolbar.title = "Question ${numOfQuestion?.plus(1)}"
+            }*///mb budet rabotat'       (для чтения при нажатии Превиус)
 
-            radioGroup.setOnCheckedChangeListener { _, _ ->
-                radioGroup.forEachIndexed { index, view ->
+
+            toolbar.title = "Question ${numOfQuestion?.plus(1)}"
+            //чекнутый вариант ответа сохранить в датакласс !!!!!записьб ппри клике selectById
+
+            radioGroup.setOnCheckedChangeListener { group, checkedId ->
+                quizQuestion?.selectedCheckedIdButton = checkedId
+                binding.nextButton.isEnabled = true
+                quizQuestion?.userAnswer = binding.radioGroup.findViewById<RadioButton>(checkedId).text.toString()
+                Log.d(TAG,"Произошла запись $checkedId , ${quizQuestion?.userAnswer} в переменную ${quizQuestion?.selectedCheckedIdButton} для вопроса $numOfQuestion")
+            }
+
+            /*radioGroup.setOnCheckedChangeListener { g, id -> //неверно использовано(группа, чекИд) g,id  вернуть должен себя и айдишку
+                radioGroup.forEachIndexed { index, view -> //рассказ про адресаА и посылки, в лямбде-что с ними сделать
                     if ((view as RadioButton).isChecked) {
                         quizQuestion?.userAnswer = index
-                        Log.e(TAG, "${quizQuestion?.userAnswer}")
+                        Log.e(TAG, "${quizQuestion?.userAnswer}") // button по id вытянуть текст
                     }
                     binding.nextButton.isEnabled = true
                 }
-            }
+            }*/
         }
 
         return binding.root
@@ -112,7 +129,7 @@ class QuizQuestionsFragment : Fragment() {
         }
     }
 
-    private fun setQuestion() {
+    private fun setQuestion() { //обязательно записать id чекнутого баттона, проверить, был ли вызван этот вопрос впервые? если не впервые, то написать.
         val thisQuestion = mQuestionsList?.get(numOfQuestion!!)
         binding.apply {
             if (thisQuestion != null) {
@@ -127,6 +144,13 @@ class QuizQuestionsFragment : Fragment() {
     }
 
     private fun onBackClickListener() {
+        binding.run {
+            if (quizQuestion?.selectedCheckedIdButton != -1) {
+                radioGroup.check(quizQuestion?.selectedCheckedIdButton!!)
+                Log.d(TAG, "Произошло чтение")
+            } else
+                Log.d(TAG, "Чтения не произошло, т.к. ${quizQuestion?.selectedCheckedIdButton}")
+        }
         numOfQuestion = numOfQuestion?.dec()
         passData?.openQuestion(numOfQuestion)
     }
@@ -138,19 +162,19 @@ class QuizQuestionsFragment : Fragment() {
     }
 
     private fun onNextClickListener() {
-
         binding.nextButton.setOnClickListener {
-            quizQuestion?.userAnswer = binding.radioGroup.checkedRadioButtonId
-            Log.d(TAG, "${quizQuestion?.userAnswer}")
+
+           /* quizQuestion?.selectedCheckedIdButton = binding.radioGroup.checkedRadioButtonId*/
+            /* Log.d(TAG, "${quizQuestion?.userAnswer}")*/
 
             numOfQuestion = numOfQuestion?.inc()
             passData?.openQuestion(numOfQuestion)
+            Log.d(TAG, "${quizQuestion?.selectedCheckedIdButton} для вопроса $numOfQuestion")
         }
     }
 
     private fun enableButton() {
-
-        binding.apply {
+        binding.run {
             when (numOfQuestion) {
                 0 -> previousButton.isEnabled = false
                 4 -> nextButton.text = "Submit"

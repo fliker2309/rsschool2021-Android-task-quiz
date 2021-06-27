@@ -13,7 +13,7 @@ object Constants {
             "Paris",
             "Istanbul",
             "Manchester",
-            1
+            "London"
         )
         questionList.add(question1)
 
@@ -24,7 +24,7 @@ object Constants {
             "Russia",
             "Belgium",
             "England",
-            0
+            "France"
         )
         questionList.add(question2)
 
@@ -35,7 +35,7 @@ object Constants {
             "1959",
             "1961",
             "1969",
-            3
+            "1961"
         )
         questionList.add(question3)
 
@@ -46,7 +46,7 @@ object Constants {
             "JetBrains",
             "Eclipse",
             "Oracle",
-            2
+            "JetBrains"
         )
         questionList.add(question4)
 
@@ -57,7 +57,7 @@ object Constants {
             "Lewis Carroll",
             "William Shakespeare",
             "Antoine de Saint-Exupéry",
-            4
+            "Antoine de Saint-Exupéry"
         )
         questionList.add(question5)
 
