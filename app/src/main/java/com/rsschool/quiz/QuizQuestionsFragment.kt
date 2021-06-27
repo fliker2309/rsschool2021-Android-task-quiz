@@ -123,13 +123,6 @@ class QuizQuestionsFragment : Fragment() {
     }
 
     private fun onBackClickListener() {
-        binding.run {
-            if (quizQuestion?.selectedCheckedIdButton != -1) {
-                radioGroup.check(quizQuestion?.selectedCheckedIdButton!!)
-                Log.d(TAG, "Произошло чтение")
-            } else
-                Log.d(TAG, "Чтения не произошло, т.к. ${quizQuestion?.selectedCheckedIdButton}")
-        }
         numOfQuestion = numOfQuestion?.dec()
         passData?.openQuestion(numOfQuestion)
     }
