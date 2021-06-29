@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import com.rsschool.quiz.data.Constants
 import com.rsschool.quiz.databinding.ActivityMainBinding
+import kotlin.system.exitProcess
 
 private const val TAG = "myLog"
 
@@ -66,7 +67,7 @@ class MainActivity : AppCompatActivity(), QuizInterface {
     }
 
     override fun closeApp() {
-        finish()
+        exitProcess(0)
     }
 
     override fun openQuestion(numOfQuestion: Int?) {
