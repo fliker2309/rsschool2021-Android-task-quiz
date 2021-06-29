@@ -40,8 +40,9 @@ class ResultFragment : Fragment() {
             }
             icShare.setOnClickListener {
                 val intent = Intent().apply {
-                    action = Intent.ACTION_SENDTO
-                    data = Uri.parse("mailto:")
+                    action = Intent.ACTION_SEND
+                    type = "text/plain"
+
                     putExtra(Intent.EXTRA_TEXT, mainInterface?.getShareText())
                 }
                 startActivity(intent)
