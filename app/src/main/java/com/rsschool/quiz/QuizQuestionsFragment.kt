@@ -3,6 +3,7 @@ package com.rsschool.quiz
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -97,6 +98,14 @@ class QuizQuestionsFragment : Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
 
+    //код для смены цвета статусбара
+    override fun onResume() {
+        val typedValue = TypedValue()
+        requireContext().theme.resolveAttribute(android.R.attr.statusBarColor,typedValue, true)
+        requireActivity().window.statusBarColor = typedValue.data
+        super.onResume()
+    }
+
     override fun onDetach() {
         super.onDetach()
         passData = null
@@ -115,6 +124,7 @@ class QuizQuestionsFragment : Fragment() {
             3 -> requireContext().setTheme(R.style.Theme_Quiz_Fourth)
             4 -> requireContext().setTheme(R.style.Theme_Quiz_Fifth)
         }
+
     }
 
     private fun setQuestion() { //обязательно записать id чекнутого баттона, проверить, был ли вызван этот вопрос впервые? если не впервые, то написать.
